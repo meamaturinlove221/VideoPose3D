@@ -34,12 +34,8 @@ Set up [Detectron2](https://github.com/facebookresearch/detectron2) and use the 
 
 To infer keypoints from all the mp4 videos in `input_directory`, run
 ```
-cd inference
-python infer_video_d2.py \
-    --cfg COCO-Keypoints/keypoint_rcnn_R_101_FPN_3x.yaml \
-    --output-dir output_directory \
-    --image-ext mp4 \
-    input_directory
+cd data
+python infer_video_d2.py --cfg COCO-Keypoints/keypoint_rcnn_R_101_FPN_3x.yaml --output-dir ../inference/output_directory --image-ext mp4 ../inference/input_directory
 ```
 The results will be exported to `output_directory` as custom NumPy archives (`.npz` files). You can change the video extension in `--image-ext` (ffmpeg supports a wide range of formats).
 
@@ -64,7 +60,7 @@ The results will be exported to `output_directory` as custom NumPy archives (`.n
 ## Step 4: creating a custom dataset
 Run our dataset preprocessing script from the `data` directory:
 ```
-python prepare_data_2d_custom.py -i /path/to/detections/output_directory -o myvideos
+python prepare_data_2d_custom.py -i ../inference/output_directory -o myvideos
 ```
 This creates a custom dataset named `myvideos` (which contains all the videos in `output_directory`, each of which is mapped to a different subject) and saved to `data_2d_custom_myvideos.npz`. You are free to specify any name for the dataset.
 
@@ -73,7 +69,7 @@ This creates a custom dataset named `myvideos` (which contains all the videos in
 ## Step 5: rendering a custom video and exporting coordinates
 You can finally use the visualization feature to render a video of the 3D joint predictions. You must specify the `custom` dataset (`-d custom`), the input keypoints as exported in the previous step (`-k myvideos`), the correct architecture/checkpoint, and the action `custom` (`--viz-action custom`). The subject is the file name of the input video, and the camera is always 0.
 ```
-python run.py -d custom -k myvideos -arc 3,3,3,3,3 -c checkpoint --evaluate pretrained_h36m_detectron_coco.bin --render --viz-subject input_video.mp4 --viz-action custom --viz-camera 0 --viz-video /path/to/input_video.mp4 --viz-output output.mp4 --viz-size 6
+python run.py -d custom -k myvideos -arc 3,3,3,3,3 -c checkpoint --evaluate pretrained_h36m_detectron_coco.bin --render --viz-subject input.mp4 --viz-action custom --viz-camera 0 --viz-video inference/input_directory/input.mp4 --viz-output output.mp4 --viz-size 6
 ```
 
 You can also export the 3D joint positions (in camera space) to a NumPy archive. To this end, replace `--viz-output` with `--viz-export` and specify the file name.
