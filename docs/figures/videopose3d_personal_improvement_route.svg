@@ -1,0 +1,68 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1500" height="980" viewBox="0 0 1500 980">
+  <defs>
+    <marker id="arrow" markerWidth="10" markerHeight="10" refX="8" refY="5" orient="auto"><path d="M0 0 L10 5 L0 10 Z" fill="#2563eb"/></marker>
+    <style>
+      text{font-family:Arial,Helvetica,sans-serif;fill:#0f172a}.title{font-size:36px;font-weight:700}.sub{font-size:18px;font-style:italic;fill:#475569}.pt{font-size:21px;font-weight:700}.ct{font-size:13px;font-weight:700}.cs{font-size:11px;fill:#475569}.num{font-size:22px;font-weight:700;fill:#fff}.box{fill:#fff;stroke-width:1.4}.arr{stroke:#2563eb;stroke-width:3;marker-end:url(#arrow)}
+    </style>
+  </defs>
+  <rect width="1500" height="980" fill="#fff"/>
+  <text x="750" y="56" text-anchor="middle" class="title">VideoPose3D Personal Improvement Route</text>
+  <text x="750" y="88" text-anchor="middle" class="sub">Baseline reproduction, engineering cleanup, and experiment-facing improvements for monocular 3D human pose estimation</text>
+
+  <g transform="translate(30 125)">
+    <rect width="260" height="590" rx="18" fill="#eff6ff" stroke="#2563eb" stroke-width="1.8"/>
+    <circle cx="36" cy="34" r="22" fill="#2563eb"/><text x="36" y="42" text-anchor="middle" class="num">1</text>
+    <text x="78" y="35" class="pt" fill="#2563eb">Input and</text><text x="78" y="58" class="pt" fill="#2563eb">Task Setup</text>
+    <g transform="translate(18 86)"><rect width="224" height="86" rx="12" class="box" stroke="#2563eb"/><rect x="18" y="24" width="44" height="28" rx="5" fill="#2563eb"/><text x="84" y="34" class="ct">Monocular video</text><text x="84" y="53" class="ct">or image sequence</text></g>
+    <g transform="translate(18 190)"><rect width="224" height="86" rx="12" class="box" stroke="#2563eb"/><line x1="18" y1="39" x2="62" y2="39" stroke="#2563eb" stroke-width="4"/><circle cx="30" cy="39" r="6" fill="#fff" stroke="#2563eb" stroke-width="3"/><text x="84" y="34" class="ct">2D keypoints</text><text x="84" y="53" class="ct">from detector input</text></g>
+    <g transform="translate(18 294)"><rect width="224" height="86" rx="12" class="box" stroke="#2563eb"/><circle cx="38" cy="39" r="14" fill="none" stroke="#2563eb" stroke-width="3"/><text x="84" y="34" class="ct">Human3.6M-style</text><text x="84" y="53" class="ct">supervision target</text></g>
+    <g transform="translate(18 398)"><rect width="224" height="110" rx="12" class="box" stroke="#2563eb"/><path d="M22 18 h34 l14 14 v44 h-48z" fill="none" stroke="#2563eb" stroke-width="3"/><text x="84" y="31" class="ct">Problem definition</text><text x="84" y="50" class="cs">predict temporally stable</text><text x="84" y="67" class="cs">3D human joints from</text><text x="84" y="84" class="cs">2D observations</text></g>
+  </g>
+
+  <g transform="translate(320 125)">
+    <rect width="260" height="590" rx="18" fill="#f0fdfa" stroke="#0f766e" stroke-width="1.8"/>
+    <circle cx="36" cy="34" r="22" fill="#0f766e"/><text x="36" y="42" text-anchor="middle" class="num">2</text>
+    <text x="78" y="35" class="pt" fill="#0f766e">Original</text><text x="78" y="58" class="pt" fill="#0f766e">VideoPose3D</text>
+    <g transform="translate(18 86)"><rect width="224" height="86" rx="12" class="box" stroke="#0f766e"/><rect x="18" y="24" width="44" height="28" rx="5" fill="#0f766e"/><text x="84" y="34" class="ct">Temporal model</text><text x="84" y="53" class="ct">baseline pipeline</text></g>
+    <g transform="translate(18 190)"><rect width="224" height="86" rx="12" class="box" stroke="#0f766e"/><circle cx="38" cy="39" r="14" fill="none" stroke="#0f766e" stroke-width="3"/><text x="84" y="34" class="ct">Strong benchmark</text><text x="84" y="53" class="ct">for 3D pose lifting</text></g>
+    <g transform="translate(18 294)"><rect width="224" height="96" rx="12" class="box" stroke="#0f766e"/><line x1="18" y1="42" x2="62" y2="42" stroke="#0f766e" stroke-width="4"/><circle cx="30" cy="42" r="6" fill="#fff" stroke="#0f766e" stroke-width="3"/><text x="84" y="31" class="ct">Useful, but still</text><text x="84" y="50" class="ct">research-code oriented</text><text x="84" y="70" class="cs">needs clearer entry points</text></g>
+    <g transform="translate(18 408)"><rect width="224" height="100" rx="12" class="box" stroke="#0f766e"/><path d="M22 18 h34 l14 14 v44 h-48z" fill="none" stroke="#0f766e" stroke-width="3"/><text x="84" y="31" class="ct">The fork starts from</text><text x="84" y="50" class="ct">baseline reproduction</text><text x="84" y="70" class="cs">before personal changes</text></g>
+  </g>
+
+  <g transform="translate(610 125)">
+    <rect width="260" height="590" rx="18" fill="#ecfeff" stroke="#0891b2" stroke-width="1.8"/>
+    <circle cx="36" cy="34" r="22" fill="#0891b2"/><text x="36" y="42" text-anchor="middle" class="num">3</text>
+    <text x="78" y="35" class="pt" fill="#0891b2">My Improvements</text><text x="78" y="58" class="pt" fill="#0891b2">and Contributions</text>
+    <g transform="translate(18 86)"><rect width="224" height="96" rx="12" class="box" stroke="#0891b2"/><path d="M22 18 h34 l14 14 v44 h-48z" fill="none" stroke="#0891b2" stroke-width="3"/><text x="84" y="31" class="ct">Cleaner project</text><text x="84" y="50" class="ct">understanding and docs</text><text x="84" y="70" class="cs">lower reproduction cost</text></g>
+    <g transform="translate(18 200)"><rect width="224" height="96" rx="12" class="box" stroke="#0891b2"/><rect x="18" y="26" width="44" height="28" rx="5" fill="#0891b2"/><text x="84" y="31" class="ct">More explicit</text><text x="84" y="50" class="ct">experiment workflow</text><text x="84" y="70" class="cs">train / eval / visualize</text></g>
+    <g transform="translate(18 314)"><rect width="224" height="96" rx="12" class="box" stroke="#0891b2"/><line x1="18" y1="42" x2="62" y2="42" stroke="#0891b2" stroke-width="4"/><circle cx="30" cy="42" r="6" fill="#fff" stroke="#0891b2" stroke-width="3"/><text x="84" y="31" class="ct">Engineering-focused</text><text x="84" y="50" class="ct">refinement route</text><text x="84" y="70" class="cs">for personal research use</text></g>
+    <g transform="translate(18 428)"><rect width="224" height="108" rx="12" class="box" stroke="#0891b2"/><circle cx="22" cy="34" r="3" fill="#2563eb"/><circle cx="42" cy="50" r="3" fill="#06b6d4"/><circle cx="60" cy="34" r="3" fill="#f97316"/><text x="84" y="31" class="ct">Visualization and</text><text x="84" y="50" class="ct">result interpretation</text><text x="84" y="70" class="cs">make outputs easier to read</text></g>
+  </g>
+
+  <g transform="translate(900 125)">
+    <rect width="260" height="590" rx="18" fill="#f5f3ff" stroke="#7c3aed" stroke-width="1.8"/>
+    <circle cx="36" cy="34" r="22" fill="#7c3aed"/><text x="36" y="42" text-anchor="middle" class="num">4</text>
+    <text x="78" y="35" class="pt" fill="#7c3aed">Experiment</text><text x="78" y="58" class="pt" fill="#7c3aed">Loop</text>
+    <g transform="translate(18 100)"><rect width="224" height="92" rx="12" class="box" stroke="#7c3aed"/><rect x="18" y="28" width="44" height="28" rx="5" fill="#7c3aed"/><text x="84" y="31" class="ct">Prepare data</text><text x="84" y="50" class="ct">and 2D detections</text></g>
+    <g transform="translate(18 215)"><rect width="224" height="92" rx="12" class="box" stroke="#7c3aed"/><circle cx="38" cy="42" r="14" fill="none" stroke="#7c3aed" stroke-width="3"/><text x="84" y="31" class="ct">Train temporal</text><text x="84" y="50" class="ct">lifting model</text></g>
+    <g transform="translate(18 330)"><rect width="224" height="92" rx="12" class="box" stroke="#7c3aed"/><line x1="18" y1="42" x2="62" y2="42" stroke="#7c3aed" stroke-width="4"/><circle cx="30" cy="42" r="6" fill="#fff" stroke="#7c3aed" stroke-width="3"/><text x="84" y="31" class="ct">Evaluate with</text><text x="84" y="50" class="ct">standard metrics</text></g>
+    <g transform="translate(18 445)"><rect width="224" height="92" rx="12" class="box" stroke="#7c3aed"/><path d="M22 18 h34 l14 14 v44 h-48z" fill="none" stroke="#7c3aed" stroke-width="3"/><text x="84" y="31" class="ct">Visualize predictions</text><text x="84" y="50" class="ct">and analyze errors</text></g>
+  </g>
+
+  <g transform="translate(1190 125)">
+    <rect width="260" height="590" rx="18" fill="#ecfdf5" stroke="#047857" stroke-width="1.8"/>
+    <circle cx="36" cy="34" r="22" fill="#047857"/><text x="36" y="42" text-anchor="middle" class="num">5</text>
+    <text x="78" y="35" class="pt" fill="#047857">Result and</text><text x="78" y="58" class="pt" fill="#047857">Repository Role</text>
+    <g transform="translate(18 100)"><rect width="224" height="96" rx="12" class="box" stroke="#047857"/><rect x="18" y="26" width="44" height="28" rx="5" fill="#047857"/><text x="84" y="31" class="ct">A reproducible</text><text x="84" y="50" class="ct">personal baseline</text><text x="84" y="70" class="cs">for monocular 3D pose</text></g>
+    <g transform="translate(18 220)"><rect width="224" height="96" rx="12" class="box" stroke="#047857"/><circle cx="22" cy="34" r="3" fill="#2563eb"/><circle cx="42" cy="50" r="3" fill="#06b6d4"/><circle cx="60" cy="34" r="3" fill="#f97316"/><text x="84" y="31" class="ct">Good project for</text><text x="84" y="50" class="ct">research presentation</text><text x="84" y="70" class="cs">and resume explanation</text></g>
+    <g transform="translate(18 340)"><rect width="224" height="120" rx="12" class="box" stroke="#047857"/><path d="M22 18 h34 l14 14 v44 h-48z" fill="none" stroke="#047857" stroke-width="3"/><text x="84" y="31" class="ct">Focus of this README</text><text x="84" y="50" class="ct">is my contribution,</text><text x="84" y="69" class="ct">not just repeating</text><text x="84" y="88" class="ct">the upstream README</text></g>
+  </g>
+
+  <line x1="292" y1="420" x2="318" y2="420" class="arr"/><line x1="582" y1="420" x2="608" y2="420" class="arr"/><line x1="872" y1="420" x2="898" y2="420" class="arr"/><line x1="1162" y1="420" x2="1188" y2="420" class="arr"/>
+
+  <rect x="50" y="755" width="1400" height="150" rx="18" fill="#f8fbff" stroke="#60a5fa" stroke-width="1.4"/>
+  <text x="750" y="790" text-anchor="middle" class="pt" fill="#2563eb">Key Notes</text>
+  <text x="90" y="825" class="ct">• The original VideoPose3D paper and code provide the baseline; this fork emphasizes personal engineering and research-facing work.</text>
+  <text x="90" y="850" class="ct">• The README highlights what changed, what was learned, and how the repository is used in practice.</text>
+  <text x="90" y="875" class="ct">• This project is presented as a reproducible monocular 3D pose estimation baseline and improvement route.</text>
+</svg>
