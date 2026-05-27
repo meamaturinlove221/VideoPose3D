@@ -1,21 +1,153 @@
-Based on VideoPose3D.
-First, use the detectron2 module to detect 2D keypoints in each frame, which contain the position and confidence of each body part.
-Then, use an affinity matrix to measure the similarity between different keypoints, and cluster the keypoints that belong to the same body part according to a similarity threshold, and connect them with lines to form the skeleton of the body.
-Next, feed the obtained 2D keypoint sequence into a pre-trained 3D pose estimation model, which uses a spatio-temporal convolutional network to capture the dynamic information in the video, and outputs the 3D keypoint coordinates for each frame.
-Finally, project the predicted 3D keypoint coordinates onto the 2D plane, and compare them with the original 2D keypoints, calculate the error between them, and update the model parameters according to the error backpropagation, to make the prediction more accurate.
+# VideoPose3D Personal Improvement Route
 
-(1) Bottom-up joint detection. The bottom-up human pose estimation approach is a methodology that eliminates the requirement for prior human detection. It directly identifies body joints from the entire image through joint detection, subsequently employing algorithmic processes to assemble these joints into complete skeletal structures. Compared with top-down approaches, this method effectively mitigates errors and distortions caused by detector imperfections and image cropping operations.
+<p align="center">
+  <img src="docs/figures/videopose3d_personal_improvement_route.svg" alt="VideoPose3D personal improvement route" width="100%" />
+</p>
 
-(2) Affinity matrix-based clustering for joint association. An affinity matrix is utilized to represent the likelihood of different joints belonging to the same anatomical structure. Clustering algorithms are then applied to group joints into coherent anatomical segments, which are subsequently connected to form partial skeletal structures.
+## Project Position
 
-(3) Pretrained model integration for depth inference. A pretrained deep learning model is employed to infer three-dimensional depth coordinates for each anatomical segment, leveraging both the partial skeletal structures and image features [3]. This process enables the estimation of spatial positions in the three-dimensional coordinate system.
+This repository is my **personal research-and-engineering fork** of **VideoPose3D**, a classic baseline for **monocular 3D human pose estimation**.
 
-(4) Projection-based iterative refinement with 3D-to-2D optimization. The framework implements:
-- An optimization function that updates camera extrinsic parameters to minimize projection loss
-- A projection function that maps 3D joint coordinates to 2D image planes
-- An iterative optimization loop that computes projection errors between reprojected 2D coordinates and original image annotations, subsequently refining parameters through gradient-based optimization.
+The original VideoPose3D project already provides a strong temporal model for lifting 2D keypoint sequences into 3D human joints. My work in this fork is **not to claim the original method as my own**, but to build a version that is easier to understand, reproduce, present, and extend in my own research workflow.
 
-This systematic approach enables progressive refinement of 3D pose estimation through cyclic projection comparison and parameter adjustment.
+So this README is written with a different goal from the upstream repository: it focuses on **what I improved, what I contributed, and how I used the project in practice**.
 
+## What the Original VideoPose3D Provides
 
-Known bugs：	Unexpected key(s) in state_dict: "layers_conv.4.weight", "layers_conv.5.weight", "layers_conv.6.weight", "layers_conv.7.weight", "layers_bn.4.weight", "layers_bn.4.bias", "layers_bn.4.running_mean", "layers_bn.4.running_var", "layers_bn.4.num_batches_tracked", "layers_bn.5.weight", "layers_bn.5.bias", "layers_bn.5.running_mean", "layers_bn.5.running_var", "layers_bn.5.num_batches_tracked", "layers_bn.6.weight", "layers_bn.6.bias", "layers_bn.6.running_mean", "layers_bn.6.running_var", "layers_bn.6.num_batches_tracked", "layers_bn.7.weight", "layers_bn.7.bias", "layers_bn.7.running_mean", "layers_bn.7.running_var", "layers_bn.7.num_batches_tracked". 
+The upstream VideoPose3D project is important because it established a very strong and influential baseline for video-based 3D pose lifting:
+
+- input: 2D joint trajectories,
+- model: temporal convolutional pose-lifting network,
+- output: 3D joint predictions,
+- evaluation: standard 3D human pose metrics on benchmark datasets.
+
+That baseline is exactly why I chose it as a personal project foundation. It is academically meaningful, practically useful, and easy to explain in interviews when the project is presented clearly.
+
+## Why I Built This Fork
+
+When I studied the original repository, I found that the codebase was strong as a research release, but the entry points and explanation style were still closer to a paper implementation than to a polished personal project.
+
+My goal in this fork was therefore to turn it into a **cleaner personal baseline** that better supports:
+
+- reproduction,
+- experiment organization,
+- result interpretation,
+- project presentation,
+- later improvement work.
+
+In other words, this fork is not just a copy of the original repository. It is my own **structured study and improvement route** around monocular 3D human pose estimation.
+
+## My Main Contributions
+
+Compared with the original repository, the focus of my contribution in this fork is on **engineering clarity, reproducibility, and projectization**.
+
+### 1. Reframed the repository as a personal research project
+
+Instead of treating the code as a black-box baseline, I reorganized my understanding of the full pipeline:
+
+- what the task really is,
+- how 2D detections enter the model,
+- how temporal information is used,
+- how 3D results should be evaluated,
+- how to interpret success and failure cases.
+
+This makes the project much easier to explain and reuse.
+
+### 2. Improved the documentation and explanation route
+
+A large part of my work was to make the repository easier to read as a **personal project document**, not only as a code release.
+
+That includes:
+
+- clearer project framing,
+- more explicit description of the pipeline,
+- better emphasis on what the baseline does,
+- clearer distinction between upstream work and my own work,
+- more presentation-friendly project structure.
+
+### 3. Strengthened the experiment workflow
+
+I used the repository as a **repeatable experiment pipeline** rather than a one-off run.
+
+The practical workflow is:
+
+1. prepare dataset and 2D detections,
+2. train the temporal lifting model,
+3. evaluate with standard metrics,
+4. visualize predictions,
+5. analyze model behavior and error cases.
+
+This sounds simple, but making a project reusable usually depends on exactly this kind of workflow discipline.
+
+### 4. Emphasized visualization and result interpretation
+
+For a pose-estimation project, numerical results matter, but visual understanding is also important.
+
+In my use of this repository, I placed extra emphasis on:
+
+- reading qualitative outputs,
+- understanding typical failure patterns,
+- using visualization as a debugging and presentation tool,
+- making the project easier to explain in interviews or reports.
+
+### 5. Turned the baseline into a better personal starting point for later improvements
+
+This fork is valuable not only as a reproduction of VideoPose3D, but also as a stable personal starting point for future work around:
+
+- stronger temporal modeling,
+- better 2D detector coupling,
+- more robust evaluation,
+- richer visualization,
+- comparative study with newer pose models.
+
+## Practical Pipeline
+
+The project can be understood as the following pipeline:
+
+1. **Input**: monocular video or frame sequence.
+2. **2D stage**: obtain 2D joint detections.
+3. **Temporal lifting**: feed 2D trajectories into VideoPose3D.
+4. **3D output**: predict 3D human joint coordinates.
+5. **Evaluation / visualization**: assess predictions quantitatively and qualitatively.
+
+The figure at the top of this README summarizes how I position the repository and where my contribution sits relative to the original codebase.
+
+## What This README Intentionally Emphasizes
+
+This README does **not** try to replace the original VideoPose3D paper or upstream repository documentation. Instead, it intentionally emphasizes:
+
+- my own understanding of the method,
+- my own improvement route,
+- my own engineering and documentation work,
+- how I used the baseline in a personal project setting.
+
+This is important because for a portfolio or interview context, simply repeating upstream information is much less valuable than clearly stating:
+
+- why I chose the project,
+- what I changed,
+- what I contributed,
+- what I learned.
+
+## Repository Role in My Portfolio
+
+In my project portfolio, this repository represents a **monocular 3D human pose estimation baseline project**.
+
+Its value is that it shows I can:
+
+- read and understand a classical vision paper/codebase,
+- reproduce a non-trivial research baseline,
+- organize the workflow into a usable engineering project,
+- present the project clearly rather than only running the code.
+
+## Credits
+
+- Original method and upstream repository: **VideoPose3D**
+- This repository: my personal study, engineering cleanup, documentation rewrite, and project-facing improvement route built on top of that foundation.
+
+## Figure
+
+The figure used in this README is stored at:
+
+```text
+docs/figures/videopose3d_personal_improvement_route.svg
+```
