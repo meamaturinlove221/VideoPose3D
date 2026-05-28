@@ -1,117 +1,174 @@
-# VideoPose3D Fork: Improvements and Workflow
+# VideoPose3D Reproduction & Project Notes
 
 <p align="center">
-  <img src="docs/figures/videopose3d_personal_improvement_route.svg" alt="VideoPose3D fork improvements and workflow" width="100%" />
+  <img src="docs/figures/videopose3d_personal_improvement_route.svg" alt="VideoPose3D reproduction workflow" width="100%" />
 </p>
 
-## Route Position
+<p align="center">
+  <a href="README_CN.md">中文说明</a> ·
+  <a href="#what-this-repository-is-for">Project role</a> ·
+  <a href="#pipeline">Pipeline</a> ·
+  <a href="#quick-start">Quick start</a> ·
+  <a href="#contribution-boundary">Contribution boundary</a>
+</p>
 
-This repository is a project-oriented fork of **VideoPose3D**, a classic baseline for **monocular 3D human pose estimation**.
+This repository is a project-oriented fork of **VideoPose3D**, the well-known temporal baseline for monocular 3D human pose estimation.
 
-The upstream VideoPose3D project provides the core method: lifting 2D keypoint sequences into 3D human joint coordinates with a temporal model. This fork keeps that baseline role clear, while reorganizing the repository description around reproduction, workflow clarity, result interpretation, and project presentation.
+The original project answers a clean research question: given a sequence of 2D human keypoints, how far can a temporal model go in recovering 3D human joint positions? This fork keeps that baseline intact and makes the repository easier to use as a readable reproduction project: the task, data flow, evaluation loop, visualization path, and contribution boundary are laid out in one place.
 
-The goal of this README is therefore different from the original upstream documentation. It does not repeat the full paper-level introduction. Instead, it explains what this fork adds on top of the upstream baseline and how the project is used as a reproducible 3D pose estimation route.
+## What this repository is for
 
-## What the Upstream VideoPose3D Baseline Provides
+VideoPose3D is useful because the input-output contract is simple and still relevant:
 
-The original VideoPose3D codebase is valuable because it gives a strong and widely recognized 3D pose lifting pipeline:
+```text
+2D keypoints over time  ->  temporal pose lifting  ->  3D human joints
+```
 
-- **Input**: 2D joint trajectories extracted from monocular video.
-- **Model**: a temporal convolutional architecture that uses motion context across frames.
-- **Output**: 3D human joint coordinates.
-- **Evaluation**: standard 3D pose metrics on benchmark-style datasets.
+This fork is organized around that contract. It is meant to be read as a compact 3D pose estimation project rather than only as a copied research-code release.
 
-This makes VideoPose3D a good foundation for a personal research repository: the method is well known, the task is clear, and the input-output structure is easy to explain in a technical interview or project report.
+It is suitable for:
 
-## What This Fork Adds
+- reviewing a classical 2D-to-3D pose lifting pipeline;
+- reproducing the Human3.6M-style evaluation route;
+- explaining how temporal context helps monocular 3D pose estimation;
+- preparing a clean project narrative for reports, interviews, and portfolio review;
+- keeping upstream method ownership and fork-level work clearly separated.
 
-Compared with the original repository, this fork focuses on **projectization** rather than claiming a new pose-estimation architecture.
+## Highlights
 
-The main repository-specific contributions are:
+| Area | What is kept | What is added in this fork |
+| --- | --- | --- |
+| Method | Original VideoPose3D temporal lifting baseline | Clearer explanation of where the baseline fits in a personal project stack |
+| Workflow | Dataset loading, 2D keypoints, training, evaluation, rendering | A README structure that follows the actual engineering loop |
+| Presentation | Original code and license boundary | Architecture figure and bilingual project documentation |
+| Credibility | Upstream authors remain credited for the core model | Fork-specific contribution is described without overstating model authorship |
 
-### 1. Clearer project framing
-
-The original repository is primarily a research-code release. This fork rewrites the project entry point so that the repository is easier to read as a complete project:
-
-- what task is being solved,
-- what the upstream method contributes,
-- where the fork-specific work sits,
-- how the pipeline should be understood from input to output.
-
-This makes the repository easier to present and easier to reuse later.
-
-### 2. Explicit experiment workflow
-
-The fork emphasizes a practical experiment loop:
-
-1. prepare video or frame-sequence input,
-2. obtain or load 2D human keypoints,
-3. run the temporal 2D-to-3D lifting pipeline,
-4. evaluate predicted 3D joints with standard metrics,
-5. visualize the predicted poses and inspect failure cases.
-
-This workflow turns the repository from a code snapshot into a more repeatable engineering route.
-
-### 3. Better documentation for contribution boundaries
-
-A common issue with forked research repositories is that the upstream method and the fork-specific contribution can become mixed together. This README keeps that boundary explicit:
-
-- the original VideoPose3D method remains the core baseline,
-- this fork contributes documentation, workflow framing, and project-facing organization,
-- any future model or training changes should be described as separate extensions rather than as part of the original method.
-
-### 4. Presentation-ready architecture figure
-
-The SVG figure at the top of this README summarizes the repository in a report-friendly way:
-
-- upstream baseline,
-- fork contribution,
-- reproducible experiment loop,
-- repository output and portfolio value.
-
-This is meant to make the project easier to explain at a glance without overstating the technical ownership of the original method.
-
-## Practical Pipeline
-
-The repository can be understood as the following pipeline:
+## Pipeline
 
 ```text
 Monocular video / frame sequence
-        ↓
-2D keypoint detection or precomputed 2D keypoints
-        ↓
-VideoPose3D temporal lifting model
-        ↓
-Predicted 3D human joint coordinates
-        ↓
-Metric evaluation and qualitative visualization
+        |
+        v
+2D keypoint detection or precomputed 2D detections
+        |
+        v
+Temporal convolutional pose lifting model
+        |
+        v
+3D human joint coordinates
+        |
+        v
+Metric evaluation + qualitative pose visualization
 ```
 
-## Contribution Boundary
+In practice, this means the project can be explained through five steps:
 
-This fork should be described carefully:
+1. prepare a video sequence or a benchmark dataset split;
+2. obtain 2D keypoints in the format expected by VideoPose3D;
+3. run the temporal model to lift 2D trajectories into 3D joint coordinates;
+4. evaluate the predicted 3D poses with standard pose metrics;
+5. render examples and inspect where the model succeeds or fails.
 
-- **Original method**: VideoPose3D temporal 3D pose lifting baseline.
-- **Fork-specific contribution**: project documentation, clearer workflow framing, reproducible project route, and presentation-oriented organization.
-- **Not claimed**: authorship of the original VideoPose3D architecture or paper contribution.
+## Repository map
 
-This distinction makes the repository more credible in a portfolio context and avoids overstating the work.
+```text
+common/          model, camera geometry, losses, dataset loaders, generators
+run.py           main training / evaluation / rendering entry point
+data/            expected location for prepared 2D and 3D dataset files
+checkpoint/      expected location for trained checkpoints
+docs/figures/    project-level workflow figure used by this README
+```
 
-## Repository Role
+The main entry point is `run.py`. It loads the dataset, reads 2D detections, builds the temporal pose model, and then follows the selected mode: training, evaluation, or rendering.
 
-In a project portfolio, this repository is best positioned as a **classical monocular 3D human pose estimation baseline and reproduction project**.
+## Quick start
 
-It demonstrates the ability to:
+Clone the repository:
 
-- understand a well-known computer vision baseline,
-- trace the full 2D-to-3D pose estimation pipeline,
-- organize a research codebase into a clearer project workflow,
-- interpret both numerical and visual pose-estimation results,
-- present the project in a way that separates upstream work from fork-level contribution.
+```bash
+git clone https://github.com/meamaturinlove221/VideoPose3D.git
+cd VideoPose3D
+```
+
+Create a Python environment and install the packages required by the original project. A typical environment needs PyTorch, NumPy, Matplotlib, and the video / visualization dependencies used for rendering.
+
+Prepare the dataset files under `data/`. The default argument setup expects files following the original VideoPose3D naming convention, for example:
+
+```text
+data/data_3d_h36m.npz
+data/data_2d_h36m_cpn_ft_h36m_dbb.npz
+```
+
+Run training with the default Human3.6M-style setting:
+
+```bash
+python run.py -d h36m -k cpn_ft_h36m_dbb
+```
+
+Evaluate a checkpoint:
+
+```bash
+python run.py -d h36m -k cpn_ft_h36m_dbb --evaluate checkpoint.bin
+```
+
+Render a pose sequence:
+
+```bash
+python run.py -d h36m -k cpn_ft_h36m_dbb --render \
+  --viz-subject S9 \
+  --viz-action Walking \
+  --viz-camera 0 \
+  --viz-output output.mp4
+```
+
+The exact dataset files and checkpoints are not bundled here. Keep benchmark data and pretrained weights in local storage according to the original project and dataset license requirements.
+
+## Why keep this baseline
+
+For a 3D vision portfolio, VideoPose3D is a good classical baseline because it sits between two larger topics:
+
+- **human pose estimation**: it uses 2D body keypoints as the observation;
+- **3D geometry from video**: it recovers a temporally coherent 3D joint sequence from monocular input.
+
+That makes it a useful reference point before moving to heavier 3D human reconstruction projects such as dense point clouds, SMPL / SMPL-X priors, multi-view geometry, or scene-aware human reconstruction.
+
+## What I changed
+
+This fork does not claim a new pose-estimation architecture. The changes are project-facing:
+
+- rewrote the repository entry point so the task and route are easier to understand;
+- added a report-style workflow figure for the 2D-to-3D lifting process;
+- documented the engineering loop from data preparation to rendering;
+- clarified how to describe the repository honestly in a portfolio context;
+- added a Chinese README for local review and interview preparation.
+
+## Contribution boundary
+
+This boundary is intentional:
+
+- **Original method**: VideoPose3D temporal model and core 3D pose lifting pipeline.
+- **This fork**: reproduction-oriented organization, project documentation, workflow explanation, and presentation assets.
+- **Not claimed**: authorship of the original architecture, paper contribution, or benchmark results that belong to the upstream project.
+
+Keeping this separation makes the repository easier to defend technically. It also avoids the common problem of mixing a forked baseline with personal contribution.
+
+## Notes for interviews and reports
+
+A concise way to describe this repository:
+
+> I used VideoPose3D as a classical monocular 3D pose estimation baseline. The project helped me trace the full path from 2D keypoint sequences to temporal 3D joint prediction, evaluation, and visualization. My work on this fork is mainly reproduction, workflow organization, documentation, and project presentation, rather than claiming the original model as my own architecture.
+
+Good follow-up discussion points:
+
+- why a temporal model helps compared with single-frame lifting;
+- how 2D keypoint quality affects 3D prediction;
+- what Human3.6M-style evaluation measures and what it misses;
+- why a sparse 3D skeleton is different from dense human geometry;
+- how this baseline connects to later SMPL-X, point cloud, and full-scene human reconstruction work.
 
 ## Figure
 
-The README architecture figure is stored at:
+The workflow figure used at the top of this README is stored at:
 
 ```text
 docs/figures/videopose3d_personal_improvement_route.svg
@@ -119,4 +176,4 @@ docs/figures/videopose3d_personal_improvement_route.svg
 
 ## Credits
 
-This repository is based on the original **VideoPose3D** project. The upstream authors deserve credit for the core method and codebase. This fork focuses on project-level organization, documentation, and workflow presentation around that baseline.
+This repository is based on the original **VideoPose3D** project. The upstream authors deserve credit for the core method and codebase. This fork focuses on making the baseline easier to read, reproduce, present, and discuss as part of a broader 3D human understanding project stack.
